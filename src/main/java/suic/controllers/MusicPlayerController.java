@@ -98,6 +98,8 @@ public class MusicPlayerController implements Initializable {
 
     private void initInputListeners() {
 
+        System.out.println("Hello world");
+
         playButton.setOnMousePressed(event -> {
             // if we haven't selected a track then the selected index will be -1 therefore we're returning the NOT_PLAYING state
             PlayButtonHandler.State newState = trackView.getSelectionModel()
