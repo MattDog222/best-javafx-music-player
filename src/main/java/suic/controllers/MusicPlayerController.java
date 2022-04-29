@@ -1,5 +1,6 @@
 package suic.controllers;
 
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import lombok.SneakyThrows;
+import suic.LibrarySelectionView;
 import suic.MusicPlayerHandler;
 import suic.PlayButtonHandler;
 import suic.SharedProperties;
@@ -145,9 +147,11 @@ public class MusicPlayerController implements Initializable {
         });
 
         loadFolderItem.setOnAction(event -> {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            File file = directoryChooser.showDialog(null);
-            loadTracks(file.toPath());
+            //new Thread(() -> Application.launch(LibrarySelectionView.class));
+            new LibrarySelectionView();
+//            DirectoryChooser directoryChooser = new DirectoryChooser();
+//            File file = directoryChooser.showDialog(null);
+//            loadTracks(file.toPath());
         });
     }
 
