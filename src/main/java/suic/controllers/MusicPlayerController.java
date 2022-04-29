@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import lombok.SneakyThrows;
 import suic.MusicPlayerHandler;
 import suic.PlayButtonHandler;
@@ -19,6 +21,7 @@ import suic.model.Track;
 import suic.model.TrackCell;
 import suic.util.MathUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,6 +49,9 @@ public class MusicPlayerController implements Initializable {
 
     @FXML
     private Slider volumeSlider;
+
+    @FXML
+    private MenuItem loadFolderItem;
 
     private final Path DEFAULT_PATH = Path.of("./mp3s");
 
@@ -98,8 +104,6 @@ public class MusicPlayerController implements Initializable {
 
     private void initInputListeners() {
 
-        System.out.println("Hello world");
-
         playButton.setOnMousePressed(event -> {
             // if we haven't selected a track then the selected index will be -1 therefore we're returning the NOT_PLAYING state
             PlayButtonHandler.State newState = trackView.getSelectionModel()
@@ -138,6 +142,12 @@ public class MusicPlayerController implements Initializable {
             };
 
             playButton.setImage(image);
+        });
+
+        loadFolderItem.setOnAction(event -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File file = directoryChooser.showDialog(null);
+            loadTracks(file.toPath());
         });
     }
 
