@@ -29,7 +29,7 @@ public class LibrarySelectionView extends AnchorPane {
             Scene scene = new Scene(loader.load());
 
             Stage stage = new Stage();
-            stage.setTitle("Best Library Selector");
+            stage.setTitle("Select Libraries");
             stage.setScene(scene);
             stage.show();
 
