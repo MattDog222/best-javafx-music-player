@@ -14,6 +14,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import lombok.SneakyThrows;
 import suic.LibrarySelectionView;
 import suic.MusicPlayerHandler;
@@ -23,6 +24,7 @@ import suic.model.Track;
 import suic.model.TrackCell;
 import suic.util.MathUtils;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -74,6 +76,7 @@ public class MusicPlayerController implements Initializable {
         musicPlayerHandler = new MusicPlayerHandler();
         loadTracks(DEFAULT_PATH);
         loadImages();
+        setAutoplay(true);
         initCellFactories();
         initInputListeners();
         initBindings();
@@ -105,6 +108,13 @@ public class MusicPlayerController implements Initializable {
     }
 
     private void initInputListeners() {
+
+
+        trackSelectionHandling();
+        trackSeekHandling();
+        loopHandling();
+
+
 
         playButton.setOnMousePressed(event -> {
             // if we haven't selected a track then the selected index will be -1 therefore we're returning the NOT_PLAYING state
@@ -178,6 +188,66 @@ public class MusicPlayerController implements Initializable {
         });
         return true;
     }
+
+    private void trackSelectionHandling() {
+        trackView.setOnMouseClicked(e -> {
+            if ( e.getClickCount() < 2) //require double click+
+                return;
+
+            playTrack();
+            playButtonHandler.setState(PlayButtonHandler.State.PLAYING);
+            playButton.setImage(images.get("pause_button"));
+        });
+    }
+
+    private void trackSeekHandling() {
+        progressBar.setOnMouseClicked(e -> {
+            if (musicPlayerHandler.getPlayer() == null)
+                return;
+
+            Duration length = musicPlayerHandler.getPlayer().getStopTime();
+            double width = progressBar.getPrefWidth();
+            double newPosition = e.getX() - progressBar.getLayoutX() ;
+            double percentageIntoTrack = newPosition/width;
+            musicPlayerHandler.getPlayer().seek(length.multiply(percentageIntoTrack) );
+        });
+    }
+
+    private void setAutoplay(boolean b) {
+
+        if(musicPlayerHandler.getPlayer() == null)
+            return;
+
+        if (b) {
+            musicPlayerHandler.getPlayer().setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Here");
+                    //                //go to next track
+                int currentSongIndex = trackView.getSelectionModel().getSelectedIndex();
+                trackView.getSelectionModel().select(currentSongIndex);
+                playTrack();
+                }
+            });
+        }
+        else { //loop
+            if (musicPlayerHandler.getPlayer().getCurrentTime().subtract(musicPlayerHandler.getPlayer().getStopTime() ).equals(Duration.ZERO)) {
+                musicPlayerHandler.getPlayer().seek(Duration.ZERO);
+            }
+
+            musicPlayerHandler.getPlayer().setOnEndOfMedia(() -> {
+                musicPlayerHandler.getPlayer().seek(Duration.ZERO);
+                musicPlayerHandler.getPlayer().play();
+            });
+        }
+    }
+
+    private void loopHandling() {
+        loopCheckBox.setOnMouseClicked(e -> {
+            setAutoplay(!loopCheckBox.isSelected());
+        });
+    }
+
 
     private boolean pauseTrack() {
         if (!musicPlayerHandler.isTrackSet()) {

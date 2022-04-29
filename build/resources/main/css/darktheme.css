@@ -59,8 +59,13 @@
     -fx-background-color: -fx-mark-highlight-color, rgb(255, 255, 255);
 }
 
-.list-cell:filled:selected, .list-cell: hover {
-    -fx-text-fill: #00ffff
+.list-cell: hover {
+    -fx-text-fill: #00ffff;
+}
+
+.list-cell:filled:selected {
+    -fx-text-fill: #00ffff;
+    -fx-font-weight: bold;
 }
 
 

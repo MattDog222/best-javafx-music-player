@@ -5,6 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * TODO
+ * Add lyric text file displays
+ * Add pre-song (i.e. 3 second) delay loop option
+ * Add listener to playbuttonhandler to change image
+ */
+
 public class MusicPlayer extends Application {
 
     @Override

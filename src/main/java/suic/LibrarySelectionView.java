@@ -9,37 +9,27 @@ import suic.controllers.LibrarySelectorController;
 
 import java.io.IOException;
 
-//aka stage
+
 public class LibrarySelectionView extends AnchorPane {
 
+    private final static String TITLE = "Manage Libraries";
+    private final static String FXML_PATH = "/fxml/libSelector.fxml";
+    private final static String CSS_PATH = "/css/darktheme.css";
+
     public LibrarySelectionView() {
-        FXMLLoader loader = new FXMLLoader(this.getClass()
-                .getResource("/fxml/libSelector.fxml"));
-
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(FXML_PATH));
         loader.setRoot(this);
-
-        getStylesheets().add(this.getClass()
-                .getResource("/css/darktheme.css")
-                .toExternalForm());
-
-
+        getStylesheets().add(this.getClass().getResource(CSS_PATH).toExternalForm());
         loader.setController(new LibrarySelectorController());
 
         try {
             Scene scene = new Scene(loader.load());
-
             Stage stage = new Stage();
-            stage.setTitle("Libraries");
+            stage.setTitle(TITLE);
             stage.setScene(scene);
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
-
-
-
 }

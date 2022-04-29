@@ -35,6 +35,7 @@ public class MusicPlayerHandler {
         player.play();
     }
 
+
     public void pauseTrack() {
         player.pause();
     }

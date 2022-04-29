@@ -21,6 +21,18 @@ public class PlayButtonHandler {
 
     }
 
+    /**
+     * Updates the state
+     * @param state
+     * @return whether the set was successful
+     */
+    public boolean setState(State state) {
+        if (this.state == state)
+            return false;
+        this.state = state;
+        return true;
+    }
+
     public enum State {
         PLAYING, PAUSED, NOT_PLAYING
     }
